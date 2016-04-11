@@ -8,11 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
+class BookTableViewController: UITableViewController {
     
-    @IBOutlet weak var tableView: UITableView!
+    let searchController = UISearchController(searchResultsController: nil)
     
     var books:[Book] = []
+    var filteredBooks:[Book] = []
     
     override func viewDidLoad() {
         if let savedBooks = loadBooks() {
@@ -20,8 +21,31 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         } else {
             books = loadSampleBooks()
         }
+        books.sortInPlace {
+            return $0.title < $1.title
+        }
+        //MARK: Search
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        //searchController.searchBar.delegate = self  //http://useyourloaf.com/blog/updating-to-the-ios-8-search-controller/
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        
     }
-    
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        filteredBooks = books.filter { book in
+            return book.title.lowercaseString.containsString(searchText.lowercaseString)
+        }
+        
+        tableView.reloadData()
+    }
+    func getBookAt(index:Int)->Book {
+        if searchController.active && searchController.searchBar.text != "" {
+            return(filteredBooks[index])
+        } else {
+            return(books[index])
+        }
+    }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -35,30 +59,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         ]
     }
     // MARK: - Table view data source
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return filteredBooks.count
+        }
         return books.count
     }
     
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("book", forIndexPath: indexPath)
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("book", forIndexPath: indexPath)
         
-        cell.textLabel?.text = books[indexPath.row].title
-        cell.detailTextLabel?.text = books[indexPath.row].author
+        cell.textLabel?.text = getBookAt(indexPath.row).title
+        cell.detailTextLabel?.text = getBookAt(indexPath.row).author
+        //cell.textLabel?.text = books[indexPath.row].title
+        //cell.detailTextLabel?.text = books[indexPath.row].author
         
         return cell
     }
     
     
     // Override to support editing the table view.
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
             books.removeAtIndex(indexPath.row)
@@ -75,12 +103,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let selectedRow = tableView.indexPathForSelectedRow {
             if let destinationViewController = segue.destinationViewController as? BookDetailTableViewController {
-                destinationViewController.book = books[selectedRow.row]
+                destinationViewController.book = getBookAt(selectedRow.row)//books[selectedRow.row]
             }
         }
     }
     
     @IBAction func createBook(sender: AnyObject) {
+        searchController.searchBar.text = ""
         let book = Book(title: "New book", author: "", notes: "")
         self.books.append(book)
         let newIndexPath = NSIndexPath(forRow: self.books.count - 1, inSection: 0)
@@ -99,4 +128,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return NSKeyedUnarchiver.unarchiveObjectWithFile(Book.BooksDirectory.path!) as? [Book]
     }
 }
-
+extension BookTableViewController: UISearchResultsUpdating {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
