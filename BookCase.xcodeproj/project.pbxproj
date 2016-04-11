@@ -14,6 +14,8 @@
 		B9773E3E1CBA98ED0031B837 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9773E3C1CBA98ED0031B837 /* LaunchScreen.storyboard */; };
 		B9773E491CBA98ED0031B837 /* BookCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9773E481CBA98ED0031B837 /* BookCaseTests.swift */; };
 		B9773E541CBA98ED0031B837 /* BookCaseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9773E531CBA98ED0031B837 /* BookCaseUITests.swift */; };
+		B9773E621CBA9BDB0031B837 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9773E611CBA9BDB0031B837 /* Book.swift */; };
+		B9773E641CBAA7480031B837 /* BookDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9773E631CBAA7480031B837 /* BookDetailTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		B9773E4F1CBA98ED0031B837 /* BookCaseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookCaseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9773E531CBA98ED0031B837 /* BookCaseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCaseUITests.swift; sourceTree = "<group>"; };
 		B9773E551CBA98ED0031B837 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9773E611CBA9BDB0031B837 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		B9773E631CBAA7480031B837 /* BookDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,8 @@
 				B9773E3A1CBA98ED0031B837 /* Assets.xcassets */,
 				B9773E3C1CBA98ED0031B837 /* LaunchScreen.storyboard */,
 				B9773E3F1CBA98ED0031B837 /* Info.plist */,
+				B9773E611CBA9BDB0031B837 /* Book.swift */,
+				B9773E631CBAA7480031B837 /* BookDetailTableViewController.swift */,
 			);
 			path = BookCase;
 			sourceTree = "<group>";
@@ -258,6 +264,8 @@
 			files = (
 				B9773E361CBA98ED0031B837 /* ViewController.swift in Sources */,
 				B9773E341CBA98ED0031B837 /* AppDelegate.swift in Sources */,
+				B9773E621CBA9BDB0031B837 /* Book.swift in Sources */,
+				B9773E641CBAA7480031B837 /* BookDetailTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
