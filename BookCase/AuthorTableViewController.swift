@@ -1,8 +1,8 @@
 //
-//  AuthorTableViewController.swift
+//  ViewController.swift
 //  BookCase
 //
-//  Created by Craig Grummitt on 11/04/2016.
+//  Created by Craig Grummitt on 10/04/2016.
 //  Copyright © 2016 Craig Grummitt. All rights reserved.
 //
 
@@ -13,28 +13,28 @@ class AuthorTableViewController: UITableViewController {
     let searchController = UISearchController(searchResultsController: nil)
     
     var books:[Book] = []
+    var sortedBooks:[Book] = []
     var filteredBooks:[Book] = []
+    var awaitingSave = false
     
     override func viewDidLoad() {
-        if let savedBooks = loadBooks() {
-            books = savedBooks
-        } else {
-            books = loadSampleBooks()
-        }
-        books.sortInPlace {
-            return $0.author < $1.author
-        }
+
         //MARK: Search
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        //searchController.searchBar.delegate = self  //http://useyourloaf.com/blog/updating-to-the-ios-8-search-controller/
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
         
     }
+    
+    func sortContent() {
+        sortedBooks = books.sort {
+            return $0.author < $1.author
+        }
+    }
     func filterContentForSearchText() {
         if let searchText = searchController.searchBar.text {
-            filteredBooks = books.filter { book in
+            filteredBooks = sortedBooks.filter { book in
                 return book.author.lowercaseString.containsString(searchText.lowercaseString)
             }
         }
@@ -44,14 +44,23 @@ class AuthorTableViewController: UITableViewController {
         if searchController.active && searchController.searchBar.text != "" {
             return(filteredBooks[index])
         } else {
-            return(books[index])
+            return(sortedBooks[index])
         }
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+        if awaitingSave {
+            awaitingSave = false
+            saveBooks()
+        } else {
+            if let savedBooks = loadBooks() {
+                books = savedBooks
+            } else {
+                books = loadSampleBooks()
+            }
+        }
+        sortContent()
         tableView.reloadData()
-        saveBooks()
     }
     //MARK:Data
     func loadSampleBooks()->[Book] {
@@ -77,8 +86,8 @@ class AuthorTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCellWithIdentifier("author", forIndexPath: indexPath)
         
-        cell.textLabel?.text = getBookAt(indexPath.row).author
-        cell.detailTextLabel?.text = getBookAt(indexPath.row).title
+        cell.textLabel?.text = getBookAt(indexPath.row).title
+        cell.detailTextLabel?.text = getBookAt(indexPath.row).author
         //cell.textLabel?.text = books[indexPath.row].title
         //cell.detailTextLabel?.text = books[indexPath.row].author
         
@@ -90,18 +99,15 @@ class AuthorTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            //Get books index
-            var index:Int = indexPath.row
-            if searchController.active && searchController.searchBar.text != "" {
-                let deletedBook = filteredBooks[indexPath.row]
-                if let deletedBookIndex = books.indexOf(deletedBook) {
-                    index = deletedBookIndex
-                }
-                filteredBooks.removeAtIndex(indexPath.row)
-                
+            let bookToDelete = getBookAt(indexPath.row)
+            if let bookToDeleteIndex = books.indexOf(bookToDelete) {
+                books.removeAtIndex(bookToDeleteIndex)
             }
-            //
-            books.removeAtIndex(index)
+            if searchController.active && searchController.searchBar.text != "" {
+                filteredBooks.removeAtIndex(indexPath.row)
+            } else {
+                sortedBooks.removeAtIndex(indexPath.row)
+            }
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             saveBooks()
         } else if editingStyle == .Insert {
@@ -115,6 +121,7 @@ class AuthorTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let selectedRow = tableView.indexPathForSelectedRow {
             if let destinationViewController = segue.destinationViewController as? BookDetailTableViewController {
+                awaitingSave = true
                 destinationViewController.book = getBookAt(selectedRow.row)//books[selectedRow.row]
             }
         }
@@ -124,11 +131,12 @@ class AuthorTableViewController: UITableViewController {
         searchController.searchBar.text = ""
         let book = Book(title: "New book", author: "", notes: "")
         self.books.append(book)
+        self.sortedBooks.append(book)
         let newIndexPath = NSIndexPath(forRow: self.books.count - 1, inSection: 0)
         self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
         
         self.tableView.selectRowAtIndexPath(newIndexPath, animated: true, scrollPosition: .None)
-        self.performSegueWithIdentifier("editSegue", sender: self)
+        self.performSegueWithIdentifier("editSegueAuthor", sender: self)
     }
     // MARK: NSCoding
     func saveBooks() {

@@ -244,9 +244,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <segmentedControl key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="d8c-72-pWO">
+                            <rect key="frame" x="0.0" y="64" width="600" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                        </segmentedControl>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="author" textLabel="wg1-ZZ-UmI" detailTextLabel="GnF-aB-now" style="IBUITableViewCellStyleValue2" id="NaR-zc-huD">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="121" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NaR-zc-huD" id="C7X-Ki-jMs">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -269,7 +277,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="gTT-Dy-woo" kind="show" id="GsT-Hx-FPZ"/>
+                                    <segue destination="gTT-Dy-woo" kind="show" identifier="editSegueAuthor" id="GsT-Hx-FPZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
