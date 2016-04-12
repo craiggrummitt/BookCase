@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B90FE48D1CBC86EA00462602 /* AuthorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90FE48C1CBC86EA00462602 /* AuthorTableViewController.swift */; };
 		B9773E341CBA98ED0031B837 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9773E331CBA98ED0031B837 /* AppDelegate.swift */; };
 		B9773E361CBA98ED0031B837 /* BookTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9773E351CBA98ED0031B837 /* BookTableViewController.swift */; };
 		B9773E391CBA98ED0031B837 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9773E371CBA98ED0031B837 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B90FE48C1CBC86EA00462602 /* AuthorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorTableViewController.swift; sourceTree = "<group>"; };
 		B9773E301CBA98ED0031B837 /* BookCase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookCase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9773E331CBA98ED0031B837 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B9773E351CBA98ED0031B837 /* BookTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				B9773E611CBA9BDB0031B837 /* Book.swift */,
 				B9773E631CBAA7480031B837 /* BookDetailTableViewController.swift */,
 				B9773E691CBC76820031B837 /* Extensions */,
+				B90FE48C1CBC86EA00462602 /* AuthorTableViewController.swift */,
 			);
 			path = BookCase;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 			files = (
 				B9773E361CBA98ED0031B837 /* BookTableViewController.swift in Sources */,
 				B9773E341CBA98ED0031B837 /* AppDelegate.swift in Sources */,
+				B90FE48D1CBC86EA00462602 /* AuthorTableViewController.swift in Sources */,
 				B9773E621CBA9BDB0031B837 /* Book.swift in Sources */,
 				B9773E641CBAA7480031B837 /* BookDetailTableViewController.swift in Sources */,
 			);
@@ -500,6 +504,7 @@
 				B9773E5A1CBA98ED0031B837 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B9773E5B1CBA98ED0031B837 /* Build configuration list for PBXNativeTarget "BookCaseTests" */ = {
 			isa = XCConfigurationList;
@@ -508,6 +513,7 @@
 				B9773E5D1CBA98ED0031B837 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B9773E5E1CBA98ED0031B837 /* Build configuration list for PBXNativeTarget "BookCaseUITests" */ = {
 			isa = XCConfigurationList;
@@ -516,6 +522,7 @@
 				B9773E601CBA98ED0031B837 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
