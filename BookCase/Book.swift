@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 import MapKit
 
-public class Book: NSObject, NSCoding {
+class Book: NSObject, NSCoding {
     
     var title:String
     var author:String
@@ -35,7 +35,7 @@ public class Book: NSObject, NSCoding {
     }
     
     // MARK: NSCoding
-    convenience required public init?(coder aDecoder: NSCoder) {
+    convenience required init?(coder aDecoder: NSCoder) {
         guard let title = aDecoder.decodeObjectForKey(PropertyKey.title) as? String,
         let author = aDecoder.decodeObjectForKey(PropertyKey.author) as? String,
         let notes = aDecoder.decodeObjectForKey(PropertyKey.notes) as? String
@@ -49,9 +49,20 @@ public class Book: NSObject, NSCoding {
         )
     }
     
-    public func encodeWithCoder(aCoder: NSCoder) {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.title, forKey: PropertyKey.title)
         aCoder.encodeObject(self.author, forKey: PropertyKey.author)
         aCoder.encodeObject(self.notes, forKey: PropertyKey.notes)
+        self.hashValue
+    }
+}
+
+
+func ==(lhs: Book, rhs: Book) -> Bool {
+    return lhs.title == rhs.title && lhs.author == rhs.author
+}
+extension Book {
+    override var hashValue: Int {
+        return title.hashValue ^ author.hashValue
     }
 }

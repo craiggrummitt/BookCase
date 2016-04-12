@@ -109,6 +109,7 @@
 				B9773E3F1CBA98ED0031B837 /* Info.plist */,
 				B9773E611CBA9BDB0031B837 /* Book.swift */,
 				B9773E631CBAA7480031B837 /* BookDetailTableViewController.swift */,
+				B9773E691CBC76820031B837 /* Extensions */,
 			);
 			path = BookCase;
 			sourceTree = "<group>";
@@ -129,6 +130,13 @@
 				B9773E551CBA98ED0031B837 /* Info.plist */,
 			);
 			path = BookCaseUITests;
+			sourceTree = "<group>";
+		};
+		B9773E691CBC76820031B837 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -32,11 +32,12 @@ class BookTableViewController: UITableViewController {
         tableView.tableHeaderView = searchController.searchBar
         
     }
-    func filterContentForSearchText(searchText: String, scope: String = "All") {
-        filteredBooks = books.filter { book in
-            return book.title.lowercaseString.containsString(searchText.lowercaseString)
+    func filterContentForSearchText() {
+        if let searchText = searchController.searchBar.text {
+            filteredBooks = books.filter { book in
+                return book.title.lowercaseString.containsString(searchText.lowercaseString)
+            }
         }
-        
         tableView.reloadData()
     }
     func getBookAt(index:Int)->Book {
@@ -89,7 +90,18 @@ class BookTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            books.removeAtIndex(indexPath.row)
+            //Get books index
+            var index:Int = indexPath.row
+            if searchController.active && searchController.searchBar.text != "" {
+                let deletedBook = filteredBooks[indexPath.row]
+                if let deletedBookIndex = books.indexOf(deletedBook) {
+                    index = deletedBookIndex
+                }
+                filteredBooks.removeAtIndex(indexPath.row)
+                
+            }
+            //
+            books.removeAtIndex(index)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             saveBooks()
         } else if editingStyle == .Insert {
@@ -130,6 +142,6 @@ class BookTableViewController: UITableViewController {
 }
 extension BookTableViewController: UISearchResultsUpdating {
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        filterContentForSearchText()
     }
 }
