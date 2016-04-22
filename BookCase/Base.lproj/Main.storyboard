@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Book Table View Controller-->
+        <!--Books by Title-->
         <scene sceneID="Zyw-cA-iks">
             <objects>
                 <tableViewController id="1Of-td-aAs" customClass="BookTableViewController" customModule="BookCase" customModuleProvider="target" sceneMemberID="viewController">
@@ -48,7 +48,7 @@
                             <outlet property="delegate" destination="1Of-td-aAs" id="0SC-FO-fA4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Psd-QL-EQW">
+                    <navigationItem key="navigationItem" title="Books by Title" id="Psd-QL-EQW">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="R4T-4y-Fsh">
                             <connections>
                                 <action selector="createBook:" destination="1Of-td-aAs" id="VA8-EK-GV5"/>
@@ -199,10 +199,10 @@
             </objects>
             <point key="canvasLocation" x="3455" y="799"/>
         </scene>
-        <!--Title-->
+        <!--Books By Title-->
         <scene sceneID="BKG-86-PVt">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qo6-rZ-2Og" sceneMemberID="viewController">
+                <navigationController title="Books By Title" automaticallyAdjustsScrollViewInsets="NO" id="qo6-rZ-2Og" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Title" image="literature" id="Ptz-Su-fXR"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="65T-LR-CF1">
@@ -236,7 +236,7 @@
             </objects>
             <point key="canvasLocation" x="1010" y="429"/>
         </scene>
-        <!--Author Table View Controller-->
+        <!--Books By Author-->
         <scene sceneID="lop-aw-7IX">
             <objects>
                 <tableViewController id="319-Wo-ECp" customClass="AuthorTableViewController" customModule="BookCase" customModuleProvider="target" sceneMemberID="viewController">
@@ -278,7 +278,7 @@
                             <outlet property="delegate" destination="319-Wo-ECp" id="wky-UI-VmO"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="OlX-ZE-m0z">
+                    <navigationItem key="navigationItem" title="Books By Author" id="OlX-ZE-m0z">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="uGx-vv-V5N">
                             <connections>
                                 <action selector="createBook:" destination="319-Wo-ECp" id="oDL-3A-rkc"/>
@@ -290,10 +290,10 @@
             </objects>
             <point key="canvasLocation" x="2634" y="1139"/>
         </scene>
-        <!--Author-->
+        <!--Books By Author-->
         <scene sceneID="GiU-0x-TEg">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tZa-MK-XTn" sceneMemberID="viewController">
+                <navigationController title="Books By Author" automaticallyAdjustsScrollViewInsets="NO" id="tZa-MK-XTn" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Author" image="user_male_circle" id="tWk-me-cku"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VcZ-4R-s9F">
