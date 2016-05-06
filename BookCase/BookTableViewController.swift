@@ -16,6 +16,7 @@ class BookTableViewController: UITableViewController {
     var sortedBooks:[Book] = []
     var filteredBooks:[Book] = []
     var awaitingSave = false
+    var defaultCover = UIImage(named: "book.jpg")!
     
     override func viewDidLoad() {
 
@@ -28,7 +29,7 @@ class BookTableViewController: UITableViewController {
     }
     func sortContent() {
         sortedBooks = books.sort {
-            return $0.title < $1.title
+            return $0.title.lowercaseString < $1.title.lowercaseString
         }
     }
     func filterContentForSearchText() {
@@ -64,7 +65,7 @@ class BookTableViewController: UITableViewController {
     //MARK:Data
     func loadSampleBooks()->[Book] {
         return [
-            Book(title: "Great Expectations", author: "Charles Dickens",notes: "")
+            Book(title: "Great Expectations", author: "Charles Dickens",notes: "", cover: defaultCover)
         ]
     }
     // MARK: - Table view data source
@@ -87,6 +88,7 @@ class BookTableViewController: UITableViewController {
         
         cell.textLabel?.text = getBookAt(indexPath.row).title
         cell.detailTextLabel?.text = getBookAt(indexPath.row).author
+        cell.imageView?.image = getBookAt(indexPath.row).cover
         //cell.textLabel?.text = books[indexPath.row].title
         //cell.detailTextLabel?.text = books[indexPath.row].author
         
@@ -128,7 +130,7 @@ class BookTableViewController: UITableViewController {
     
     @IBAction func createBook(sender: AnyObject) {
         searchController.searchBar.text = ""
-        let book = Book(title: "New book", author: "", notes: "")
+        let book = Book(title: "New book", author: "", notes: "", cover: defaultCover)
         self.books.append(book)
         self.sortedBooks.append(book)
         let newIndexPath = NSIndexPath(forRow: self.books.count - 1, inSection: 0)
