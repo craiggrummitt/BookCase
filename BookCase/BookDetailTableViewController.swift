@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwiftyJSON
 
 class BookDetailTableViewController: UITableViewController {
     @IBOutlet weak var titleTextField: UITextField!
@@ -40,14 +40,12 @@ class BookDetailTableViewController: UITableViewController {
         }
     }
     @IBAction func getBarcode(sender: AnyObject) {
-     /*   let scannerViewController = ScannerViewController()
+        let scannerViewController = ScannerViewController()
         scannerViewController.modalPresentationStyle = .Popover
         scannerViewController.popoverPresentationController?.sourceView = barcodeButton
         scannerViewController.popoverPresentationController?.sourceRect = barcodeButton.bounds
         scannerViewController.delegate = self
         self.presentViewController(scannerViewController, animated: true, completion: nil)
-       */
-        foundBarcode("9780194792325")
     }
     @IBAction func bookChanged(sender: AnyObject) {
         if let book = book {
@@ -85,8 +83,75 @@ extension BookDetailTableViewController:ScannerViewControllerDelegate {
         let session = NSURLSession.sharedSession()
         let dataTask = session.dataTaskWithURL(url) { (data, response, error) in
             guard let data = data else { return }
-            //-------> TO BE CONTINUED
+            // USING NSJSONSerialization
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject]
+                if let items = json["items"] as? [AnyObject] {
+                    if let volume = items[0] as? [String:AnyObject] {
+                        if let volumeInfo = volume["volumeInfo"] as? [String:AnyObject] {
+                            if let title = volumeInfo["title"] as? String,
+                                authors = volumeInfo["authors"] as? [String],
+                                imageLinks = volumeInfo["imageLinks"] as? [String:String],
+                                thumbnail = imageLinks["thumbnail"] {
+                                
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.titleTextField.text = title
+                                    self.authorTextField.text = authors.joinWithSeparator(",")
+                                    self.loadCover(thumbnail)
+                                    if let book = self.book {
+                                        book.title = title
+                                        book.author = authors.joinWithSeparator(",")
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+                
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
+            
+            /* ALTERNATIVELY, USING SWIFTYJSON
+             
+             //------Swifty JSON Style JSON
+            let json = JSON(data: data)
+            if let volumeInfo = json["items"][0]["volumeInfo"].dictionary {
+                if let title = volumeInfo["title"]?.string,
+                    let authors = volumeInfo["authors"]?.array,
+                    let firstAuthor = authors[0].string,
+                    let imageLinks = volumeInfo["imageLinks"]?.dictionary,
+                    let thumbnail = imageLinks["thumbnail"]?.string,
+                    let book = self.book
+                {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.titleTextField.text = title
+                        self.authorTextField.text = firstAuthor
+                        book.title = title
+                        book.author = firstAuthor
+                        self.loadCover(thumbnail)
+                    })
+                }
+            }
+            */
         }
+        dataTask.resume()
+    }
+    func loadCover(thumbnailURL:String) {
+        guard let url = NSURL(string: thumbnailURL) else {return}
+        print("Loading \(url)")
+        let session = NSURLSession.sharedSession()
+        let downloadTask = session.downloadTaskWithURL(url) { (temporaryURL, response, error) in
+            if let imageURL = temporaryURL, data = NSData(contentsOfURL: imageURL), image = UIImage(data: data) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.imageView.image = image
+                    if let book = self.book {
+                        book.cover = image
+                    }
+                })
+            }
+        }
+        downloadTask.resume()
     }
 }
 
